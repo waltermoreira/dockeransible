@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USAGE="\
-build_app.sh <name>:         run playbook
+build_app.sh <name>:         provision app 'name' from roles
 build_app.sh commit <name>:  create image
 "
 
@@ -12,8 +12,8 @@ usage() {
 
 start_ssh_server() {
     name=$1;
-    state=$(docker inspect -f "{{ .State.Running }}" $name)
-    if [ ! "$?" -eq 0 ]; then
+    state=$(docker inspect -f "{{ .State.Running }}" $name 2>/dev/null)
+    if [ ! "$?" -eq 0 -o "$state" == "<no value>" ]; then
         # No container with than name. Start one.
         docker run -d -P --name $name ssh_server
     elif [ "$state" == "false" ]; then
@@ -26,6 +26,9 @@ start_ssh_server() {
 
 if [ "$#" -eq 0 -o "$1" == "-h" ]; then
     usage;
+elif [ "$1" == "commit" ]; then
+    docker commit $2 $2
+    docker rm -f $2
 else
     start_ssh_server $1;
     docker run --rm ssh_server cat /etc/ssh/ssh_host_rsa_key > key
