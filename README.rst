@@ -37,7 +37,7 @@ The only dependency is ``docker``.
 
    .. code-block:: bash
 
-       $ cd dockeransible/examples
+       $ cd dockeransible/example
        $ docker run -v $(pwd):/target app_builder install
        $ ./build_app my_app
 
@@ -59,3 +59,8 @@ The only dependency is ``docker``.
    .. code-block:: bash
 
        $ docker run -it my_app
+
+
+.. _Docker: docker.com
+.. _Ansible: ansible.com
+.. _Ansible Galaxy: galaxy.ansible.com
