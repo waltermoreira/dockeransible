@@ -39,10 +39,10 @@ The only dependency is ``docker``.
 
        $ cd dockeransible/example
        $ docker run -v $(pwd):/target app_builder install
-       $ ./build_app my_app
+       $ ./build_app.sh my_app
 
    Ansible will provision a container with name ``my_app`` with the
-   provided roles.  The command ``build_app`` may be run multiple
+   provided roles.  The command ``build_app.sh`` may be run multiple
    times, taking advantage of Ansible idempotency. The roles can be
    changed, added, or deleted in between runs.
 
@@ -50,7 +50,7 @@ The only dependency is ``docker``.
 
    .. code-block:: bash
 
-       $ ./build_app commit my_app
+       $ ./build_app.sh commit my_app
 
    This step creates the image with name ``my_app``.
 
