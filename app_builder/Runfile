@@ -1,0 +1,5 @@
+EXPOSE 80
+
+ENTRYPOINT ["/usr/bin/python"]
+
+CMD []

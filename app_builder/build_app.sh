@@ -29,6 +29,10 @@ if [ "$#" -eq 0 -o "$1" == "-h" ]; then
 elif [ "$1" == "commit" ]; then
     docker commit $2 $2
     docker rm -f $2
+    (
+        echo "FROM $2";
+        cat Runfile
+    ) | docker build -t $2 -
 else
     start_ssh_server $1;
     docker run --rm ssh_server cat /etc/ssh/ssh_host_rsa_key > key
@@ -36,6 +40,7 @@ else
     docker run -it --rm \
         -v $(pwd)/roles:/build/roles \
         -v $(pwd)/key:/build/key \
+        -v $(pwd)/Runfile:/build/Runfile \
         --link $1:target app_builder provision
     rm -rf key
 fi
