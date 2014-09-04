@@ -1,3 +1,5 @@
 ---
 
-- debug: msg="Task from role 1"
+- name: Create file /tmp/test1
+  copy: src=test1 dest=/tmp/test1
+

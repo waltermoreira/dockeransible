@@ -1,3 +1,4 @@
 ---
 
-- debug: msg="Test from role 2"
+- name: Ensure file /tmp/test2
+  copy: src=test2 dest=/tmp/test2
