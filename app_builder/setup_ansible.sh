@@ -10,10 +10,6 @@ git clone http://github.com/ansible/ansible.git /tmp/ansible
 cd /tmp/ansible && python setup.py install
 
 mkdir -p /build
-cat > /build/hosts <<EOF
-[local]
-localhost
-EOF
 
 apt-get clean
 rm -rf /var/log/* /tmp/* /var/tmp/* /var/lib/apt/lists/*

@@ -34,8 +34,36 @@ install() {
 }
 
 
+SITE="\
+---
+- hosts: local
+  roles:"
+
+construct_site_yml() {
+    echo "$SITE" > /build/site.yml
+    (
+        cd /build/roles;
+        for role in $(ls -d *); do
+            echo "    - $role"
+        done
+    ) >> /build/site.yml;
+}
+
+
+construct_inventory() {
+    (
+        echo "[local]"
+        echo "$TARGET_PORT_22_TCP_ADDR ansible_ssh_private_key_file=/build/key"
+    ) >> /build/hosts;
+}
+
+
 provision() {
-    echo "will run ansible here";
+    construct_inventory;
+    construct_site_yml;
+    ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i /build/hosts /build/site.yml
+    apt-get clean
+    rm -rf /var/log/* /tmp/* /var/tmp/* /var/lib/apt/lists/*
 }
 
 

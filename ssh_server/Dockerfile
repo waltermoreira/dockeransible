@@ -1,7 +1,7 @@
 FROM debian
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server python && \
     apt-get clean && \
     mkdir -p /var/run/sshd && \
     mkdir -p /root/.ssh && \
