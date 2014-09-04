@@ -61,6 +61,11 @@ The only dependency is ``docker``.
        $ docker run -it my_app
 
 
+License
+=======
+
+MIT
+
 .. _Docker: docker.com
 .. _Ansible: ansible.com
 .. _Ansible Galaxy: galaxy.ansible.com
