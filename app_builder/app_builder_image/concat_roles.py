@@ -71,3 +71,19 @@ def concat(role1, role2, into, copy=False):
     create_role(into)
     move(role1, target_role=into, copy=copy)
     move(role2, target_role=into, copy=copy)
+
+
+def test():
+    roles = ['foo', 'bar', 'spam']
+    try:
+        for role in roles:
+            create_role(role)
+        move('foo', 'bar')
+        assert get_metadata('bar')['dependencies'] == ['bar/roles/foo']
+
+        move('bar', 'spam')
+        assert get_metadata('spam')['dependencies'] == ['spam/roles/bar']
+        assert get_metadata('spam/roles/bar')['dependencies'] == ['spam/roles/bar/roles/foo']
+    finally:
+        for role in roles:
+            shutil.rmtree(role, ignore_errors=True)
