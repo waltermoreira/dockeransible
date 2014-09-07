@@ -47,9 +47,6 @@ def fix_dependency(role, for_destination):
     deps = metadata.setdefault('dependencies', [])
     def it():
         for dep in deps:
-            print('dep: {}'.format(dep))
-            print('role: {}'.format(role))
-            print('  dep.endswith(role)?: {}'.format(dep.endswith(role)))
             yield os.path.join(for_destination, 'roles', dep)
     metadata['dependencies'] = list(it())
     set_metadata(role, metadata)
