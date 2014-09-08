@@ -1,7 +1,10 @@
+#!/usr/bin/python
+
 import glob
 import os
 import shutil
 import subprocess
+import sys
 
 import yaml
 
@@ -97,3 +100,14 @@ def test():
     finally:
         for role in roles:
             shutil.rmtree(role, ignore_errors=True)
+
+
+def main():
+    roles_path = None
+    if roles_path is not None:
+        os.chdir(roles_path)
+    concat(sys.argv[1], sys.argv[2], sys.argv[3])
+
+
+if __name__ == '__main__':
+    main()
