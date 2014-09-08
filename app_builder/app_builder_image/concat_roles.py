@@ -45,8 +45,12 @@ def sub_roles(role):
 def fix_dependency(role, for_destination):
     metadata = get_metadata(role)
     deps = metadata.setdefault('dependencies', [])
-    metadata['dependencies'] = [os.path.join(for_destination, 'roles', dep)
-                                for dep in deps]
+    def f(dep):
+        if dep.startswith(role):
+            return os.path.join(for_destination, 'roles', dep)
+        else:
+            return dep
+    metadata['dependencies'] = [f(dep) for dep in deps]
     set_metadata(role, metadata)
 
 
