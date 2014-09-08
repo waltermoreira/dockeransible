@@ -43,6 +43,12 @@ def sub_roles(role):
 
 
 def fix_dependency(role, for_destination):
+    """Fix the sub-role dependency.
+
+    Dependency on a sub-role has to be changed once we move the base
+    role.
+
+    """
     metadata = get_metadata(role)
     deps = metadata.setdefault('dependencies', [])
     def f(dep):
