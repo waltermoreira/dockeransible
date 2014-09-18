@@ -80,10 +80,10 @@ def move(src_role, target_role, copy=False):
     add_dependency(src_role, target_role)
 
 
-def concat(role1, role2, into, copy=False):
+def concat(roles, into, copy=False):
     create_role(into)
-    move(role1, target_role=into, copy=copy)
-    move(role2, target_role=into, copy=copy)
+    for role in roles:
+        move(role, target_role=into, copy=copy)
 
 
 def test():
@@ -106,7 +106,7 @@ def main():
     roles_path = None
     if roles_path is not None:
         os.chdir(roles_path)
-    concat(sys.argv[1], sys.argv[2], sys.argv[3])
+    concat([sys.argv[1], sys.argv[2]], into=sys.argv[3])
 
 
 if __name__ == '__main__':
