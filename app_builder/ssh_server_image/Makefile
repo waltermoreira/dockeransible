@@ -1,7 +1,13 @@
+DISTROS=debian ubuntu centos
+
 .PHONY: clean
 
-build: Dockerfile
-	docker build -t ssh_server .
+build: Dockerfile.*
+	@set -e; for distro in $(DISTROS); \
+	do \
+		ln -sf Dockerfile.$$distro Dockerfile; \
+		docker build -t $${distro}_ssh_server . ; \
+	done
 	touch build
 	touch .
 

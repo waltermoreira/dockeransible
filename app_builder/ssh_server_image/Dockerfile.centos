@@ -1,0 +1,12 @@
+FROM centos
+
+RUN yum install -y openssh-server && \
+    ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key && \
+    ssh-keygen -t ecdsa -N '' -f /etc/ssh/ssh_host_ecdsa_key && \
+    mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    cat /etc/ssh/ssh_host_rsa_key.pub > /root/.ssh/authorized_keys
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]

@@ -1,0 +1,15 @@
+FROM ubuntu
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server python && \
+    apt-get clean && \
+    mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh && \
+    cat /etc/ssh/ssh_host_rsa_key.pub > /root/.ssh/authorized_keys && \
+    rm -rf /tmp/* /var/log/* /var/tmp/* /var/lib/apt/lists/*
+
+ADD entry.sh /bin/entry.sh
+
+EXPOSE 22
+
+CMD ["/bin/entry.sh"]
