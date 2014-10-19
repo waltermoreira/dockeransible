@@ -7,7 +7,7 @@ apt-get install -y python python-dev python-pip git
 pip install paramiko PyYAML jinja2 httplib2
 
 git clone http://github.com/ansible/ansible.git /tmp/ansible
-cd /tmp/ansible && python setup.py install
+cd /tmp/ansible && git checkout release1.7.2 && python setup.py install
 
 mkdir -p /build
 
