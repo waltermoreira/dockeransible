@@ -39,7 +39,7 @@ The only dependency is ``docker``.
 
        $ cd dockeransible/example
        $ docker run -v $(pwd):/target app_builder install
-       $ ./build_app.sh my_app
+       $ ./build_app.sh my_app ubuntu
 
    Ansible will provision a container with name ``my_app`` with the
    provided roles.  The command ``build_app.sh`` may be run multiple
