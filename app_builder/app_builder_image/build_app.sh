@@ -42,6 +42,8 @@ else
     chmod 0600 key
     docker run -it --rm \
         -v $(pwd)/roles:/build/roles \
+        -v $(pwd)/host_vars:/build/host_vars \
+        -v $(pwd)/group_vars:/build/group_vars \
         -v $(pwd)/key:/build/key \
         -v $(pwd)/Runfile:/build/Runfile \
         --link $1:target app_builder provision
