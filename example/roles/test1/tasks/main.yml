@@ -2,4 +2,7 @@
 
 - name: Create file /tmp/test1
   copy: src=test1 dest=/tmp/test1
+  tags:
+    - initial
 
+- debug: msg={{ x }}

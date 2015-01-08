@@ -5,6 +5,11 @@ build_app.sh <name> <group> <distro>:
   provision app 'name' from roles using vars form {host,group}_vars/'group'
   and base distribution 'distro'
 
+build_app.sh update <name> <group>:
+  update an already committed image by running the playbook and skipping
+  any task with tag 'initial' (make sure to run 'commit' again to generate
+  the updated image)
+
 build_app.sh commit <name>:
   create image
 "
@@ -29,6 +34,13 @@ start_ssh_server() {
 }
 
 
+start_image() {
+    name=$1;
+    docker run -d --entrypoint=sleep --name=$name $name infinity
+    docker exec $name service ssh start
+}
+
+
 if [ "$#" -eq 0 -o "$1" == "-h" ]; then
     usage;
 elif [ "$1" == "commit" ]; then
@@ -40,9 +52,19 @@ elif [ "$1" == "commit" ]; then
         cat Runfile
     ) | docker build -t $2 -
 else
-    # --- provision
-    start_ssh_server $1 $3;
-    docker run --rm ${3}_ssh_server cat /etc/ssh/ssh_host_rsa_key > key
+    # --- provision or update
+    if [ "$1" == "update" ]; then
+        task="update";
+        name=$2;
+        group=$3;
+        start_image $name;
+    else
+        task="provision";
+        name=$1
+        group=$2
+        start_ssh_server $name $3;
+    fi
+    docker exec $name cat /etc/ssh/ssh_host_rsa_key > key
     chmod 0600 key
     docker run -it --rm \
         -v $(pwd)/roles:/build/roles \
@@ -50,6 +72,6 @@ else
         -v $(pwd)/group_vars:/build/group_vars \
         -v $(pwd)/key:/build/key \
         -v $(pwd)/Runfile:/build/Runfile \
-        --link $1:target app_builder provision $2
+        --link $name:target app_builder provision $group $task
     rm -rf key
 fi

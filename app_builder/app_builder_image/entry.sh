@@ -57,9 +57,14 @@ construct_inventory() {
 
 
 provision() {
+    if [ "$2" == "update" ]; then
+        TASK="--skip-tags initial"
+    else
+        TASK=""
+    fi
     construct_inventory $1;
     construct_site_yml $1;
-    ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i /build/hosts /build/site.yml
+    ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i /build/hosts /build/site.yml $TASK
     apt-get clean
     rm -rf /var/log/* /tmp/* /var/tmp/* /var/lib/apt/lists/*
 }
@@ -70,5 +75,5 @@ if [ "$#" -eq 0 ]; then
 elif [ "$1" == "install" ]; then
     install;
 elif [ "$1" == "provision" ]; then
-    provision $2;
+    provision $2 $3;
 fi
