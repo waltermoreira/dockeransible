@@ -66,12 +66,14 @@ else
     fi
     docker exec $name cat /etc/ssh/ssh_host_rsa_key > key
     chmod 0600 key
+    mkdir temp
+    cp -LR $(pwd)/roles temp
     docker run -it --rm \
-        -v $(pwd)/roles:/build/roles \
+        -v $(pwd)/temp/roles:/build/roles \
         -v $(pwd)/host_vars:/build/host_vars \
         -v $(pwd)/group_vars:/build/group_vars \
         -v $(pwd)/key:/build/key \
         -v $(pwd)/Runfile:/build/Runfile \
         --link $name:target app_builder provision $group $task
-    rm -rf key
+    rm -rf key temp
 fi
