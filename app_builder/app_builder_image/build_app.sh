@@ -1,8 +1,12 @@
 #!/bin/bash
 
 USAGE="\
-build_app.sh <name> <distro>:         provision app 'name' from roles
-build_app.sh commit <name>:  create image
+build_app.sh <name> <group> <distro>:
+  provision app 'name' from roles using vars form {host,group}_vars/'group'
+  and base distribution 'distro'
+
+build_app.sh commit <name>:
+  create image
 "
 
 usage() {
@@ -37,8 +41,8 @@ elif [ "$1" == "commit" ]; then
     ) | docker build -t $2 -
 else
     # --- provision
-    start_ssh_server $1 $2;
-    docker run --rm ${2}_ssh_server cat /etc/ssh/ssh_host_rsa_key > key
+    start_ssh_server $1 $3;
+    docker run --rm ${3}_ssh_server cat /etc/ssh/ssh_host_rsa_key > key
     chmod 0600 key
     docker run -it --rm \
         -v $(pwd)/roles:/build/roles \
@@ -46,6 +50,6 @@ else
         -v $(pwd)/group_vars:/build/group_vars \
         -v $(pwd)/key:/build/key \
         -v $(pwd)/Runfile:/build/Runfile \
-        --link $1:target app_builder provision
+        --link $1:target app_builder provision $2
     rm -rf key
 fi
