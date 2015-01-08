@@ -39,12 +39,14 @@ The only dependency is ``docker``.
 
        $ cd dockeransible/example
        $ docker run -v $(pwd):/target app_builder install
-       $ ./build_app.sh my_app ubuntu
+       $ ./build_app.sh my_app my_group ubuntu
 
    Ansible will provision a container with name ``my_app`` with the
    provided roles.  The command ``build_app.sh`` may be run multiple
    times, taking advantage of Ansible idempotency. The roles can be
-   changed, added, or deleted in between runs.
+   changed, added, or deleted in between runs.  The parameter
+   ``my_group`` is the name of a YAML file in ``group_vars`` with
+   variables parametrizing the playbook.
 
    Once the container is in the desired state, run:
 
@@ -59,6 +61,15 @@ The only dependency is ``docker``.
    .. code-block:: bash
 
        $ docker run -it my_app
+
+4. Once an image is created in step 2, it can be updated with:
+
+   .. code-block:: bash
+
+       $ ./build_app.sh update my_app my_group
+
+   This runs the playbook against a fresh container started from the
+   image, and it skips any task in the playbook with tag *"initial"*.
 
 
 License
