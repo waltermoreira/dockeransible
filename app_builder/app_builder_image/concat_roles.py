@@ -17,11 +17,24 @@ def create_role(role):
 
 
 def get_metadata(role):
-    main = open(os.path.join(role, 'meta/main.yml'))
-    return yaml.load(main)
+    try:
+        main = open(os.path.join(role, 'meta/main.yml'))
+        return yaml.load(main)
+    except IOError:
+        return {}
+
+
+def ensure_meta(role):
+    """Ensure the role has a meta directory"""
+
+    try:
+        os.makedirs(os.path.join(role, 'meta'))
+    except OSError:
+        pass
 
 
 def set_metadata(role, metadata):
+    ensure_meta(role)
     new_main = os.path.join(role, 'meta/main.yml.new')
     orig_main = os.path.join(role, 'meta/main.yml')
     with open(new_main, 'w') as out:
