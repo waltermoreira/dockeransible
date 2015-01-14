@@ -76,4 +76,6 @@ elif [ "$1" == "install" ]; then
     install;
 elif [ "$1" == "provision" ]; then
     provision $2 $3;
+elif [ "$1" == "compose" ]; then
+    /bin/compose $2 $3 $4;
 fi
